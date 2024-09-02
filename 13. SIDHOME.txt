@@ -1,0 +1,15 @@
+#!/bin/bash
+# for manual standby get home
+
+if [ -f /etc/oratab ];
+then
+	export HOME=/home/oracle
+	. /etc/profile
+		for i in $(grep -Ev "^#|(^$)|^\*|^\+" /etc/oratab |cut -d":" -f1,2)
+		do
+			echo "SIDHOME="$i
+		done
+
+fi
+
+exit 0

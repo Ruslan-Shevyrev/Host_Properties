@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# candidate servers on exadata
+
+# FIND GRID_HOME for candidate servers
+
+OINVENTORY=/etc/oraInst.loc
+if [ -f $OINVENTORY ];
+then
+	OINVDIR=$(grep inventory_loc /etc/oraInst.loc |cut -f2 -d"=")
+	if [ -d $OINVDIR ];
+	then
+		OINVXML=$OINVDIR/ContentsXML/inventory.xml
+		if [ -f $OINVXML ];
+		then
+			GRID_HOME=$(grep 'TYPE="O"' $OINVXML | grep grid|grep -v "REMOVED" |sed -e 's/.*LOC="\([^[:blank:]]*\)".*/\1/');
+			echo "GRID_HOME="$GRID_HOME
+
+		fi
+	fi
+fi
+
+# FIND nodes usgin found GRID_HOME for candidate
+
+if [[ $(hostname -s) = ex*db* ]]
+then
+	if [ -d $GRID_HOME ];
+	then
+		SRVCTL=$GRID_HOME/bin/srvctl
+		for un in `$SRVCTL config database`
+		do
+
+			hm=`$SRVCTL config database -verbose| tr '\t' ':' |grep $un":" |cut -d":" -f2`
+
+			export ORACLE_HOME=$hm
+			nodes=`$hm/bin/srvctl config database -d $un |grep "Candidate servers"|cut -d":" -f2| sed 's/ //g'`
+
+			echo EXA_DBUN_NODE_LIST=$un":"$nodes
+		done
+	fi
+fi
+export ORACLE_HOME=""
+
+exit 0

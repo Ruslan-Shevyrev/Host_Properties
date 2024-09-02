@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export KERNEL=`uname -r`
+echo "KERNEL="$KERNEL
+
+exit 0

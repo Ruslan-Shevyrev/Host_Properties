@@ -1,0 +1,20 @@
+#!/bin/bash
+
+OINVENTORY=/etc/oraInst.loc
+if [ -f $OINVENTORY ];
+then
+	OINVDIR=$(grep inventory_loc /etc/oraInst.loc |cut -f2 -d"=")
+	if [ -d $OINVDIR ];
+	then
+		OINVXML=$OINVDIR/ContentsXML/inventory.xml
+		if [ -f $OINVXML ];
+		then
+			for i in $(grep 'TYPE="O"' $OINVXML |grep -v "REMOVED" |sed -e 's/.*LOC="\([^[:blank:]]*\)".*/\1/');
+			do
+				echo "ORAINV="$i
+			done
+		fi
+	fi
+fi
+
+exit 0

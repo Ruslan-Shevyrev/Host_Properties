@@ -1,0 +1,10 @@
+#!/bin/bash
+
+CORES=$(grep cores /proc/cpuinfo | awk '{print $(NF)}' | sort -nk1 | tail -n1)
+PHYSICAL=$(grep "physical id" /proc/cpuinfo | awk '{print $(NF)}' | sort -nk1 | uniq | wc -l)
+
+if ([[ -n $CORES ]] && [[ -n $PHYSICAL ]]);
+then
+	echo "CORES="$CORES
+fi
+exit 0

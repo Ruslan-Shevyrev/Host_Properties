@@ -1,0 +1,5 @@
+pgrep mesos-slave &>/dev/null
+if [ $? = 0 ];
+then
+  echo "MESOS=TRUE"
+fi

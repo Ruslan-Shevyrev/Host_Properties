@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -f /etc/oratab ];
+then
+	export HOME=/home/oracle
+	. /etc/profile
+		for i in $(grep -Ev "^#|(^$)|^\*|^\+" /etc/oratab |cut -d":" -f1)
+		do
+			echo "SID="$i
+		done
+fi
+
+for i in $(ps -ef|grep -E 'ora_pmon'|grep -v grep|cut -f3 -d"_")
+do
+	echo "PS_SID="$i
+done
+
+exit 0

@@ -1,0 +1,10 @@
+#!/bin/bash
+ 
+IMAGE_VERSION=$(imageinfo 2>/dev/null| grep 'Image version' | cut -d" " -f3)
+
+if [[ -n $IMAGE_VERSION ]]
+then
+	echo "IMAGE_VERSION="$IMAGE_VERSION
+fi
+
+exit 0

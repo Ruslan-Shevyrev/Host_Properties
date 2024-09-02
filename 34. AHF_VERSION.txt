@@ -1,0 +1,10 @@
+#!/bin/bash
+
+AHF_VERSION=$(ahf --version 2>/dev/null | grep 'AHF version' | cut -d" " -f3)
+
+if [[ -n $AHF_VERSION ]]
+then
+	echo "AHF_VERSION="$AHF_VERSION
+fi
+
+exit 0

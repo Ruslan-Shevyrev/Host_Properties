@@ -1,0 +1,5 @@
+pgrep docker &>/dev/null
+if [ $? = 0 ];
+then
+        echo "DOCKER=TRUE"
+fi

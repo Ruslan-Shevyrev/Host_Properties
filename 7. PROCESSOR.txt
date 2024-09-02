@@ -1,0 +1,14 @@
+#!/bin/bash
+
+CORES=$(grep cores /proc/cpuinfo | awk '{print $(NF)}' | sort -nk1 | tail -n1)
+PHYSICAL=$(grep "physical id" /proc/cpuinfo | awk '{print $(NF)}' | sort -nk1 | uniq | wc -l)
+PROCESSOR=$(grep processor /proc/cpuinfo | awk '{print $(NF)}' | sort -nk1 | tail -n1)
+
+if ([[ -n $CORES ]] && [[ -n $PHYSICAL ]]);
+then
+	exit 0
+else
+	echo "PROCESSOR="$PROCESSOR
+fi
+
+exit 0

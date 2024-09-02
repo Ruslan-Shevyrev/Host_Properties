@@ -1,0 +1,5 @@
+#!/bin/bash
+IFS=$'\n'
+for e in `sysctl -a`
+do echo CORE_PARAM=\"$e\"
+done

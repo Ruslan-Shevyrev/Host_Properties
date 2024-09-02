@@ -1,0 +1,6 @@
+#!/bin/bash
+CRONTAB=$(crontab -l)
+
+echo "CRONTAB=${CRONTAB}"
+
+exit 0

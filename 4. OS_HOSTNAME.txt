@@ -1,0 +1,6 @@
+#!/bin/bash
+OS_HOSTNAME=$(hostname -f)
+
+echo "OS_HOSTNAME="$OS_HOSTNAME
+
+exit 0

@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "USERS_PASS=SUCCESS"

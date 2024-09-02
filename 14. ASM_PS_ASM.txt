@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ -f /etc/oratab ];
+then
+	export HOME=/home/oracle
+	. /etc/profile
+	ASMSID=$(grep '^+ASM' /etc/oratab |cut -f1 -d':')
+	if [ -n "$ASMSID" ];
+	then
+		echo "ASM="$ASMSID
+	fi
+fi
+
+# on ASM
+for i in $(ps -ef|grep -E 'asm_pmon'|grep -v grep|cut -f3 -d"_")
+do
+	echo "PS_ASM="$i
+done
+
+exit 0

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -f /etc/oracle-release ];
+then
+	OSVERSION=$(grep -HEi '(oracle)|(red hat)' /etc/oracle-release)
+elif [ -f /etc/centos-release ];
+then
+	OSVERSION=$(grep -HEi '(centos)|(red hat)' /etc/centos-release)
+elif [ -f /etc/redhat-release ];
+then
+	OSVERSION=$(grep -HEi '(centos)|(oracle)|(red hat)' /etc/redhat-release)
+elif [ -f /etc/SuSE-release ];
+then
+	OSVERSION=$(grep -HEi '(suse)' /etc/SuSE-release)
+else
+	OSVERSION=$(grep -HEi '(suse)|(oracle)|(centos)|(red hat)' /etc/*release)
+fi
+
+echo "OS="$( cut -d':' -f2 <<< $OSVERSION)
+
+exit 0

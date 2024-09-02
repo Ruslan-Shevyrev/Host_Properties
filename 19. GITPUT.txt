@@ -1,0 +1,56 @@
+#!/bin/bash
+
+export PATH=/usr/bin:/bin:/sbin
+
+ENTITY=$1
+
+function gitput(){
+		PROJECTID=68
+		SRCFILENAME=$1
+		DSTFILENAME=$2
+	TOKEN=$3
+		if [ "$4" = "Y" ];
+		then
+			SOURCE=$(grep -vE '(^\s*#)|(^;)|(^[[:blank:]]*$)' $SRCFILENAME)
+		else
+			SOURCE=$(cat $SRCFILENAME)
+		fi
+		URLSTR="http://gitadmin.moscow.sportmaster.ru/api/v3/projects/$PROJECTID/repository/files?file_path=${DSTFILENAME}&ref=master&branch_name=master&commit_message=APEX"
+		curl -XPUT -i -k -H "PRIVATE-TOKEN: $TOKEN" $URLSTR -F "content=${SOURCE}" 1> /dev/null 2>&1
+		if [ $? = 0 ];
+		then
+			echo $DSTFILENAME
+		fi
+}
+
+case "$ENTITY" in
+	"GETFILE")
+		TARGETFILE=$2
+		TOKEN=$3
+		REMOVECOMMENTS=$4
+		if [ -f $TARGETFILE ];
+		then
+			sleep 2
+			gitput $TARGETFILE $(hostname -f)""$TARGETFILE "$TOKEN" $REMOVECOMMENTS
+		fi
+		exit 0
+	;;
+	"GETESTEMPLATE")
+		TOKEN=$2
+		ESHOST=$3
+		ESPORT=$4
+		ESCLUSTER=$5
+		REMOVECOMMENTS=$6
+		TEMPLATEFILE=$ESCLUSTER".estemplate"
+		sleep 2
+		curl --silent -XGET "http://"$ESHOST":"$ESPORT"/_template?pretty" > "/tmp/"$TEMPLATEFILE
+		gitput "/tmp/"$TEMPLATEFILE $TEMPLATEFILE "$TOKEN" $REMOVECOMMENTS
+		rm "/tmp/"$TEMPLATEFILE
+		exit 0
+	;;
+	*)
+	/bin/true
+	;;
+esac
+
+exit 0

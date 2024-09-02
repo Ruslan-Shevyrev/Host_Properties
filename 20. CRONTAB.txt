@@ -1,0 +1,11 @@
+#!/bin/bash
+CRONTAB=$(crontab -l)
+
+IFS=$'\n'
+
+	for i in $(crontab -l)
+	do
+		echo "CRONTAB="$i
+	done
+
+exit 0
