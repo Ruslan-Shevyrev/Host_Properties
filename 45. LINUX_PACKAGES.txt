@@ -1,0 +1,6 @@
+#!/bin/bash
+if rpm --version >/dev/null 2>&1; then
+for e in `rpm -qa --qf '%{NAME}||%{VERSION}||%{ARCH}\n'`
+do echo PACKAGE=\"$e\"
+done
+fi
